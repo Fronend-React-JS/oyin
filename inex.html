@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>X va 0 - o'yini</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .game-wrapper {
+            background: white;
+            border-radius: 35px;
+            padding: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e3f;
+            font-size: 1.7rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+        }
+
+        h1 span {
+            font-size: 1.6rem;
+            opacity: 0.75;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #5a6e6f;
+            margin-bottom: 20px;
+            font-weight: 400;
+            font-size: 0.75rem;
+            letter-spacing: 0.3px;
+            border-top: 1px solid #e2e8f0;
+            display: inline-block;
+            width: auto;
+            padding: 6px 14px;
+            background: #f8fafc;
+            border-radius: 40px;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+        }
+
+        /* Mode selector */
+        .mode-selector {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .mode-btn {
+            background: #f1f5f9;
+            color: #2c5f6e;
+            padding: 8px 20px;
+            border-radius: 48px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #dee4ec;
+            backdrop-filter: blur(2px);
+        }
+
+        .mode-btn.active {
+            background: #2c3e3f;
+            color: white;
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .mode-btn:hover {
+            background: #e2e8f0;
+            transform: translateY(-1px);
+        }
+
+        /* Status - sokin */
+        .status {
+            background: #f4f7fb;
+            color: #2c5f6e;
+            padding: 12px 12px;
+            border-radius: 56px;
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            box-shadow: inset 0 1px 2px #00000008, 0 1px 1px white;
+            border: 1px solid #e2edf2;
+        }
+
+        /* Board 3x3 */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 28px;
+            margin-bottom: 24px;
+            border: 1px solid #eef3f8;
+        }
+
+        .cell {
+            aspect-ratio: 1 / 1;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            font-weight: 550;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e2edf2;
+            font-family: 'Segoe UI', 'Arial', system-ui;
+            color: #2c4f5e;
+        }
+
+        .cell:hover {
+            background: #fefefe;
+            border-color: #cbdbe2;
+            transform: scale(0.98);
+        }
+
+        .cell.X {
+            color: #3b6e7c;
+            text-shadow: none;
+            font-weight: 550;
+        }
+
+        .cell.O {
+            color: #8b6b4d;
+            font-weight: 550;
+        }
+
+        .cell.disabled {
+            cursor: default;
+            opacity: 0.9;
+        }
+
+        /* Tugmalar */
+        .controls {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #eef2f6;
+            border: 1px solid #d4dfe6;
+            color: #2c4f5e;
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02);
+        }
+
+        button:hover {
+            background: #e2eaf0;
+            transform: translateY(-1px);
+            border-color: #bdcbd4;
+        }
+
+        .reset-btn {
+            background: #ece4db;
+            border-color: #dbcec2;
+            color: #5c4e3d;
+        }
+
+        /* Scoreboard yumshoq */
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            background: #f9fbfd;
+            padding: 12px 8px;
+            border-radius: 60px;
+            margin-top: 8px;
+            border: 1px solid #ecf3f7;
+        }
+
+        .score {
+            text-align: center;
+            flex: 1;
+        }
+
+        .score h3 {
+            color: #6d898e;
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .score p {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #2b5a66;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(40, 40, 42, 0.6);
+            backdrop-filter: blur(2px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            padding: 28px 24px;
+            border-radius: 42px;
+            text-align: center;
+            max-width: 280px;
+            width: 85%;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content h2 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            font-weight: 500;
+            color: #2c3e3f;
+        }
+
+        .modal-content .winner-emoji {
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+        }
+
+        .modal-content button {
+            margin-top: 18px;
+            background: #eef3f7;
+            padding: 8px 22px;
+        }
+
+        /* ---------- MOBILE OPTIMIZATION (360x820 and below) ---------- */
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+                padding-top: 16px;
+            }
+
+            .game-wrapper {
+                padding: 14px 12px 18px;
+                border-radius: 24px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                gap: 6px;
+            }
+
+            h1 span {
+                font-size: 1.3rem;
+            }
+
+            .subtitle {
+                font-size: 0.65rem;
+                margin-bottom: 12px;
+                padding: 4px 12px;
+            }
+
+            .mode-selector {
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+
+            .mode-btn {
+                padding: 6px 14px;
+                font-size: 0.7rem;
+            }
+
+            .status {
+                font-size: 0.8rem;
+                padding: 9px 8px;
+                margin-bottom: 16px;
+            }
+
+            .board {
+                gap: 8px;
+                padding: 10px;
+                margin-bottom: 16px;
+            }
+
+            .cell {
+                font-size: 1.8rem;
+                border-radius: 16px;
+            }
+
+            .controls {
+                gap: 10px;
+                margin-bottom: 14px;
+            }
+
+            button {
+                padding: 6px 14px;
+                font-size: 0.75rem;
+            }
+
+            .scoreboard {
+                padding: 8px 4px;
+            }
+
+            .score h3 {
+                font-size: 0.6rem;
+            }
+
+            .score p {
+                font-size: 1.25rem;
+            }
+
+            .modal-content {
+                padding: 22px 18px;
+                width: 80%;
+            }
+
+            .modal-content h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Juda kichik 360px uchun alohida */
+        @media (max-width: 370px) {
+            .cell {
+                font-size: 1.5rem;
+            }
+            .board {
+                gap: 6px;
+            }
+            .game-wrapper {
+                padding: 12px 10px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-wrapper">
+    <h1>
+        <span>✖</span>
+        X va 0
+        <span>⬤</span>
+    </h1>
+   
+    <!-- Rejim tanlash -->
+    <div class="mode-selector">
+        <div class="mode-btn" data-mode="2player">👥 2 o‘yinchi</div>
+        <div class="mode-btn active" data-mode="bot">🤖 Bot bilan</div>
+    </div>
+
+    <!-- O'yin holati -->
+    <div class="status" id="statusMessage">🤖 Bot bilan: Siz X bilan boshlaysiz</div>
+
+    <!-- O'yin maydoni -->
+    <div class="board" id="board"></div>
+
+    <!-- Boshqaruv tugmalari -->
+    <div class="controls">
+        <button id="newGameBtn">🔄 Yangi o'yin</button>
+        <button id="resetScoreBtn" class="reset-btn">📊 Hisobni tozalash</button>
+    </div>
+
+    <!-- Hisoblagich -->
+    <div class="scoreboard">
+        <div class="score">
+            <h3>❌ Siz (X)</h3>
+            <p id="xScore">0</p>
+        </div>
+        <div class="score">
+            <h3>🤝 Durang</h3>
+            <p id="drawScore">0</p>
+        </div>
+        <div class="score">
+            <h3>🤖 Bot (O)</h3>
+            <p id="oScore">0</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="winnerModal" class="modal">
+    <div class="modal-content">
+        <div class="winner-emoji" id="winnerEmoji">🏆</div>
+        <h2 id="winnerText">G'olib!</h2>
+        <button id="closeModalBtn">Yangi o'yin ➡️</button>
+    </div>
+</div>
+
+<script>
+    // O'yin holati
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let currentPlayer = 'X';
+    let gameActive = true;
+    let gameMode = 'bot';
+    let botPlayer = 'O';
+    
+    let scores = { X: 0, O: 0, draw: 0 };
+    
+    const winPatterns = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+    ];
+    
+    let boardElement, statusMessage, modal, winnerText, winnerEmoji;
+    let closeModalBtn, newGameBtn, resetScoreBtn;
+    let xScoreElem, oScoreElem, drawScoreElem;
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        boardElement = document.getElementById('board');
+        statusMessage = document.getElementById('statusMessage');
+        modal = document.getElementById('winnerModal');
+        winnerText = document.getElementById('winnerText');
+        winnerEmoji = document.getElementById('winnerEmoji');
+        closeModalBtn = document.getElementById('closeModalBtn');
+        newGameBtn = document.getElementById('newGameBtn');
+        resetScoreBtn = document.getElementById('resetScoreBtn');
+        xScoreElem = document.getElementById('xScore');
+        oScoreElem = document.getElementById('oScore');
+        drawScoreElem = document.getElementById('drawScore');
+        
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                gameMode = btn.dataset.mode;
+                resetGame();
+                
+                if (gameMode === 'bot') {
+                    statusMessage.innerHTML = '🤖 Bot bilan: Siz X bilan boshlaysiz';
+                    botPlayer = 'O';
+                    currentPlayer = 'X';
+                    gameActive = true;
+                } else {
+                    statusMessage.innerHTML = '👥 2 o‘yinchi: X boshlaydi';
+                    currentPlayer = 'X';
+                    gameActive = true;
+                }
+                updateStatusMessage();
+            });
+        });
+        
+        createBoard();
+        updateScoreUI();
+        
+        newGameBtn.addEventListener('click', () => resetGame());
+        resetScoreBtn.addEventListener('click', () => resetScore());
+        closeModalBtn.addEventListener('click', () => {
+            resetGame();
+            modal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                resetGame();
+                modal.style.display = 'none';
+            }
+        });
+    });
+    
+    function createBoard() {
+        boardElement.innerHTML = '';
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            if (board[i] === 'X') cell.classList.add('X');
+            if (board[i] === 'O') cell.classList.add('O');
+            cell.textContent = board[i];
+            cell.dataset.index = i;
+            cell.addEventListener('click', () => handleCellClick(i));
+            boardElement.appendChild(cell);
+        }
+    }
+    
+    function handleCellClick(index) {
+        if (!gameActive) return;
+        if (board[index] !== '') return;
+        
+        if (gameMode === 'bot' && currentPlayer !== 'X') return;
+        
+        makeMove(index, currentPlayer);
+        
+        if (checkWin(currentPlayer)) {
+            endGame(false, currentPlayer);
+        } else if (isDraw()) {
+            endGame(true, null);
+        } else {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            updateStatusMessage();
+            
+            if (gameMode === 'bot' && gameActive && currentPlayer === botPlayer) {
+                setTimeout(() => botMove(), 280);
+            }
+        }
+    }
+    
+    function makeMove(index, player) {
+        board[index] = player;
+        updateBoardUI();
+    }
+    
+    function botMove() {
+        if (!gameActive) return;
+        if (currentPlayer !== botPlayer) return;
+        
+        let bestMove = getBestMove();
+        if (bestMove !== -1) {
+            makeMove(bestMove, botPlayer);
+            
+            if (checkWin(botPlayer)) {
+                endGame(false, botPlayer);
+            } else if (isDraw()) {
+                endGame(true, null);
+            } else {
+                currentPlayer = 'X';
+                updateStatusMessage();
+            }
+        }
+    }
+    
+    function getBestMove() {
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') {
+                board[i] = botPlayer;
+                if (checkWin(botPlayer)) {
+                    board[i] = '';
+                    return i;
+                }
+                board[i] = '';
+            }
+        }
+        
+        const humanPlayer = 'X';
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') {
+                board[i] = humanPlayer;
+                if (checkWin(humanPlayer)) {
+                    board[i] = '';
+                    return i;
+                }
+                board[i] = '';
+            }
+        }
+        
+        if (board[4] === '') return 4;
+        
+        const corners = [0, 2, 6, 8];
+        const emptyCorners = corners.filter(i => board[i] === '');
+        if (emptyCorners.length > 0) {
+            return emptyCorners[Math.floor(Math.random() * emptyCorners.length)];
+        }
+        
+        const emptyCells = board.reduce((arr, cell, idx) => {
+            if (cell === '') arr.push(idx);
+            return arr;
+        }, []);
+        
+        if (emptyCells.length > 0) {
+            return emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        }
+        
+        return -1;
+    }
+    
+    function checkWin(player) {
+        return winPatterns.some(pattern => {
+            return pattern.every(index => board[index] === player);
+        });
+    }
+    
+    function isDraw() {
+        return board.every(cell => cell !== '');
+    }
+    
+    function endGame(isDrawResult, winner) {
+        gameActive = false;
+        
+        if (isDrawResult) {
+            scores.draw++;
+            updateScoreUI();
+            showModal('Durang!', '🤝', "Durang!");
+            statusMessage.textContent = "🤝 Durang! Yangi o'yin boshlang.";
+        } else {
+            scores[winner]++;
+            updateScoreUI();
+            let winnerName, emoji;
+            if (winner === 'X') {
+                winnerName = gameMode === 'bot' ? 'Siz g‘alaba qozondingiz! ✖' : 'X g‘alaba qozondi! ✖';
+                emoji = '🏆✖';
+            } else {
+                winnerName = gameMode === 'bot' ? 'Bot g‘alaba qozondi! 🤖' : 'O g‘alaba qozondi! ⬤';
+                emoji = '🤖🏆';
+            }
+            showModal(winnerName, emoji, winnerName);
+            statusMessage.textContent = winnerName;
+        }
+    }
+    
+    function showModal(title, emoji, text) {
+        winnerEmoji.textContent = emoji;
+        winnerText.textContent = title;
+        modal.style.display = 'flex';
+    }
+    
+    function updateBoardUI() {
+        const cells = document.querySelectorAll('.cell');
+        for (let i = 0; i < 9; i++) {
+            cells[i].textContent = board[i];
+            cells[i].classList.remove('X', 'O');
+            if (board[i] === 'X') cells[i].classList.add('X');
+            if (board[i] === 'O') cells[i].classList.add('O');
+        }
+    }
+    
+    function updateStatusMessage() {
+        if (!gameActive) return;
+        
+        if (gameMode === 'bot') {
+            if (currentPlayer === 'X') {
+                statusMessage.innerHTML = '❌ Sizning navbatingiz (X)';
+            } else {
+                statusMessage.innerHTML = '🤖 Bot o‘ylayapti (O) ...';
+            }
+        } else {
+            statusMessage.innerHTML = `${currentPlayer === 'X' ? '❌ X' : '⭕ O'} ning navbati`;
+        }
+    }
+    
+    function updateScoreUI() {
+        xScoreElem.textContent = scores.X;
+        oScoreElem.textContent = scores.O;
+        drawScoreElem.textContent = scores.draw;
+    }
+    
+    function resetGame() {
+        board = ['', '', '', '', '', '', '', '', ''];
+        gameActive = true;
+        
+        if (gameMode === 'bot') {
+            currentPlayer = 'X';
+            botPlayer = 'O';
+            statusMessage.innerHTML = '🤖 Bot bilan: Siz X bilan boshlaysiz';
+        } else {
+            currentPlayer = 'X';
+            statusMessage.innerHTML = '👥 2 o‘yinchi: X boshlaydi';
+        }
+        
+        updateBoardUI();
+        updateStatusMessage();
+        modal.style.display = 'none';
+    }
+    
+    function resetScore() {
+        scores = { X: 0, O: 0, draw: 0 };
+        updateScoreUI();
+        resetGame();
+    }
+</script>
+</body>
+</html>
