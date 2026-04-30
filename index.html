@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>X va 0 - o'yini</title>
+    <title>X va 0 - Yutib bo'lmaydigan bot</title>
     <style>
         * {
             margin: 0;
@@ -41,7 +41,6 @@
             justify-content: center;
             gap: 10px;
             font-weight: 500;
-            letter-spacing: -0.3px;
         }
 
         h1 span {
@@ -55,19 +54,14 @@
             margin-bottom: 20px;
             font-weight: 400;
             font-size: 0.75rem;
-            letter-spacing: 0.3px;
-            border-top: 1px solid #e2e8f0;
-            display: inline-block;
-            width: auto;
-            padding: 6px 14px;
             background: #f8fafc;
             border-radius: 40px;
             margin-left: auto;
             margin-right: auto;
             width: fit-content;
+            padding: 6px 14px;
         }
 
-        /* Mode selector */
         .mode-selector {
             display: flex;
             gap: 12px;
@@ -85,14 +79,12 @@
             cursor: pointer;
             transition: all 0.2s;
             border: 1px solid #dee4ec;
-            backdrop-filter: blur(2px);
         }
 
         .mode-btn.active {
             background: #2c3e3f;
             color: white;
             border-color: #cbd5e1;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
         .mode-btn:hover {
@@ -100,7 +92,6 @@
             transform: translateY(-1px);
         }
 
-        /* Status - sokin */
         .status {
             background: #f4f7fb;
             color: #2c5f6e;
@@ -110,11 +101,9 @@
             margin-bottom: 24px;
             font-size: 1rem;
             font-weight: 500;
-            box-shadow: inset 0 1px 2px #00000008, 0 1px 1px white;
             border: 1px solid #e2edf2;
         }
 
-        /* Board 3x3 */
         .board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -137,7 +126,6 @@
             font-weight: 550;
             cursor: pointer;
             transition: all 0.15s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
             border: 1px solid #e2edf2;
             font-family: 'Segoe UI', 'Arial', system-ui;
             color: #2c4f5e;
@@ -151,13 +139,10 @@
 
         .cell.X {
             color: #3b6e7c;
-            text-shadow: none;
-            font-weight: 550;
         }
 
         .cell.O {
             color: #8b6b4d;
-            font-weight: 550;
         }
 
         .cell.disabled {
@@ -165,7 +150,6 @@
             opacity: 0.9;
         }
 
-        /* Tugmalar */
         .controls {
             display: flex;
             gap: 14px;
@@ -184,13 +168,11 @@
             border-radius: 60px;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02);
         }
 
         button:hover {
             background: #e2eaf0;
             transform: translateY(-1px);
-            border-color: #bdcbd4;
         }
 
         .reset-btn {
@@ -199,7 +181,6 @@
             color: #5c4e3d;
         }
 
-        /* Scoreboard yumshoq */
         .scoreboard {
             display: flex;
             justify-content: space-around;
@@ -220,7 +201,6 @@
             font-size: 0.7rem;
             font-weight: 500;
             margin-bottom: 6px;
-            letter-spacing: 0.3px;
         }
 
         .score p {
@@ -229,7 +209,6 @@
             color: #2b5a66;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -251,14 +230,12 @@
             text-align: center;
             max-width: 280px;
             width: 85%;
-            border: 1px solid #e9ecef;
             box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.2);
         }
 
         .modal-content h2 {
             font-size: 1.4rem;
             margin-bottom: 12px;
-            font-weight: 500;
             color: #2c3e3f;
         }
 
@@ -273,103 +250,41 @@
             padding: 8px 22px;
         }
 
-        /* ---------- MOBILE OPTIMIZATION (360x820 and below) ---------- */
         @media (max-width: 400px) {
             body {
                 padding: 10px;
-                align-items: flex-start;
                 padding-top: 16px;
             }
-
             .game-wrapper {
                 padding: 14px 12px 18px;
                 border-radius: 24px;
             }
-
             h1 {
                 font-size: 1.4rem;
-                gap: 6px;
             }
-
-            h1 span {
-                font-size: 1.3rem;
-            }
-
-            .subtitle {
-                font-size: 0.65rem;
-                margin-bottom: 12px;
-                padding: 4px 12px;
-            }
-
-            .mode-selector {
-                gap: 8px;
-                margin-bottom: 16px;
-            }
-
             .mode-btn {
                 padding: 6px 14px;
                 font-size: 0.7rem;
             }
-
             .status {
                 font-size: 0.8rem;
                 padding: 9px 8px;
                 margin-bottom: 16px;
             }
-
             .board {
                 gap: 8px;
                 padding: 10px;
-                margin-bottom: 16px;
             }
-
             .cell {
                 font-size: 1.8rem;
                 border-radius: 16px;
             }
-
-            .controls {
-                gap: 10px;
-                margin-bottom: 14px;
-            }
-
             button {
                 padding: 6px 14px;
                 font-size: 0.75rem;
             }
-
-            .scoreboard {
-                padding: 8px 4px;
-            }
-
-            .score h3 {
-                font-size: 0.6rem;
-            }
-
             .score p {
                 font-size: 1.25rem;
-            }
-
-            .modal-content {
-                padding: 22px 18px;
-                width: 80%;
-            }
-
-            .modal-content h2 {
-                font-size: 1.2rem;
-            }
-        }
-
-        /* Juda kichik 360px uchun alohida */
-        @media (max-width: 370px) {
-            .cell {
-                font-size: 1.5rem;
-            }
-            .board {
-                gap: 6px;
-            }
-            .game-wrapper {
-                padding: 12px 10px 16px;
             }
         }
     </style>
@@ -383,25 +298,20 @@
         <span>⬤</span>
     </h1>
    
-    <!-- Rejim tanlash -->
     <div class="mode-selector">
         <div class="mode-btn" data-mode="2player">👥 2 o‘yinchi</div>
-        <div class="mode-btn active" data-mode="bot">🤖 Bot bilan</div>
+        <div class="mode-btn active" data-mode="bot">🤖 Yutib bo'lmaydigan bot</div>
     </div>
 
-    <!-- O'yin holati -->
     <div class="status" id="statusMessage">🤖 Bot bilan: Siz X bilan boshlaysiz</div>
 
-    <!-- O'yin maydoni -->
     <div class="board" id="board"></div>
 
-    <!-- Boshqaruv tugmalari -->
     <div class="controls">
         <button id="newGameBtn">🔄 Yangi o'yin</button>
         <button id="resetScoreBtn" class="reset-btn">📊 Hisobni tozalash</button>
     </div>
 
-    <!-- Hisoblagich -->
     <div class="scoreboard">
         <div class="score">
             <h3>❌ Siz (X)</h3>
@@ -418,7 +328,6 @@
     </div>
 </div>
 
-<!-- Modal -->
 <div id="winnerModal" class="modal">
     <div class="modal-content">
         <div class="winner-emoji" id="winnerEmoji">🏆</div>
@@ -428,7 +337,6 @@
 </div>
 
 <script>
-    // O'yin holati
     let board = ['', '', '', '', '', '', '', '', ''];
     let currentPlayer = 'X';
     let gameActive = true;
@@ -468,7 +376,7 @@
                 resetGame();
                 
                 if (gameMode === 'bot') {
-                    statusMessage.innerHTML = '🤖 Bot bilan: Siz X bilan boshlaysiz';
+                    statusMessage.innerHTML = '🤖 Yutib bo\'lmaydigan bot: Siz X bilan boshlaysiz';
                     botPlayer = 'O';
                     currentPlayer = 'X';
                     gameActive = true;
@@ -530,7 +438,7 @@
             updateStatusMessage();
             
             if (gameMode === 'bot' && gameActive && currentPlayer === botPlayer) {
-                setTimeout(() => botMove(), 280);
+                setTimeout(() => botMove(), 200);
             }
         }
     }
@@ -540,11 +448,75 @@
         updateBoardUI();
     }
     
+    // MINIMAX ALGORITMI - bot hech qachon yutqazmaydi!
+    function minimax(boardArr, depth, isMaximizing, botSym, humanSym) {
+        // Bot = O (maximizing), Human = X (minimizing)
+        if (checkWinOnBoard(boardArr, botSym)) return 10 - depth;
+        if (checkWinOnBoard(boardArr, humanSym)) return depth - 10;
+        if (isBoardFull(boardArr)) return 0;
+        
+        if (isMaximizing) {
+            let best = -Infinity;
+            for (let i = 0; i < 9; i++) {
+                if (boardArr[i] === '') {
+                    boardArr[i] = botSym;
+                    let score = minimax(boardArr, depth + 1, false, botSym, humanSym);
+                    boardArr[i] = '';
+                    best = Math.max(score, best);
+                }
+            }
+            return best;
+        } else {
+            let best = Infinity;
+            for (let i = 0; i < 9; i++) {
+                if (boardArr[i] === '') {
+                    boardArr[i] = humanSym;
+                    let score = minimax(boardArr, depth + 1, true, botSym, humanSym);
+                    boardArr[i] = '';
+                    best = Math.min(score, best);
+                }
+            }
+            return best;
+        }
+    }
+    
+    function checkWinOnBoard(boardArr, player) {
+        return winPatterns.some(pattern => {
+            return pattern.every(index => boardArr[index] === player);
+        });
+    }
+    
+    function isBoardFull(boardArr) {
+        return boardArr.every(cell => cell !== '');
+    }
+    
+    function getBestMoveWithMinimax() {
+        let bestScore = -Infinity;
+        let bestMove = -1;
+        const humanSym = 'X';
+        const botSym = 'O';
+        
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') {
+                board[i] = botSym;
+                let score = minimax(board, 0, false, botSym, humanSym);
+                board[i] = '';
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = i;
+                }
+            }
+        }
+        return bestMove;
+    }
+    
     function botMove() {
         if (!gameActive) return;
         if (currentPlayer !== botPlayer) return;
         
-        let bestMove = getBestMove();
+        // Minimax orqali eng yaxshi harakatni top
+        let bestMove = getBestMoveWithMinimax();
+        
         if (bestMove !== -1) {
             makeMove(bestMove, botPlayer);
             
@@ -557,50 +529,6 @@
                 updateStatusMessage();
             }
         }
-    }
-    
-    function getBestMove() {
-        for (let i = 0; i < 9; i++) {
-            if (board[i] === '') {
-                board[i] = botPlayer;
-                if (checkWin(botPlayer)) {
-                    board[i] = '';
-                    return i;
-                }
-                board[i] = '';
-            }
-        }
-        
-        const humanPlayer = 'X';
-        for (let i = 0; i < 9; i++) {
-            if (board[i] === '') {
-                board[i] = humanPlayer;
-                if (checkWin(humanPlayer)) {
-                    board[i] = '';
-                    return i;
-                }
-                board[i] = '';
-            }
-        }
-        
-        if (board[4] === '') return 4;
-        
-        const corners = [0, 2, 6, 8];
-        const emptyCorners = corners.filter(i => board[i] === '');
-        if (emptyCorners.length > 0) {
-            return emptyCorners[Math.floor(Math.random() * emptyCorners.length)];
-        }
-        
-        const emptyCells = board.reduce((arr, cell, idx) => {
-            if (cell === '') arr.push(idx);
-            return arr;
-        }, []);
-        
-        if (emptyCells.length > 0) {
-            return emptyCells[Math.floor(Math.random() * emptyCells.length)];
-        }
-        
-        return -1;
     }
     
     function checkWin(player) {
@@ -620,16 +548,16 @@
             scores.draw++;
             updateScoreUI();
             showModal('Durang!', '🤝', "Durang!");
-            statusMessage.textContent = "🤝 Durang! Yangi o'yin boshlang.";
+            statusMessage.textContent = "🤝 Durang! Bot bilan durang qilish ham yutuq!";
         } else {
             scores[winner]++;
             updateScoreUI();
             let winnerName, emoji;
             if (winner === 'X') {
-                winnerName = gameMode === 'bot' ? 'Siz g‘alaba qozondingiz! ✖' : 'X g‘alaba qozondi! ✖';
-                emoji = '🏆✖';
+                winnerName = 'Siz g‘alaba qozondingiz! ✖ (Bu mumkin emas edi...)';
+                emoji = '🏆✨';
             } else {
-                winnerName = gameMode === 'bot' ? 'Bot g‘alaba qozondi! 🤖' : 'O g‘alaba qozondi! ⬤';
+                winnerName = 'Bot g‘alaba qozondi! 🤖 Hech qachon yutolmaysiz!';
                 emoji = '🤖🏆';
             }
             showModal(winnerName, emoji, winnerName);
@@ -658,9 +586,9 @@
         
         if (gameMode === 'bot') {
             if (currentPlayer === 'X') {
-                statusMessage.innerHTML = '❌ Sizning navbatingiz (X)';
+                statusMessage.innerHTML = '❌ Sizning navbatingiz (X) — botni yutishga urinib ko\'ring!';
             } else {
-                statusMessage.innerHTML = '🤖 Bot o‘ylayapti (O) ...';
+                statusMessage.innerHTML = '🤖 Bot o\'ylayapti (O) — u hech qachon yutqazmaydi...';
             }
         } else {
             statusMessage.innerHTML = `${currentPlayer === 'X' ? '❌ X' : '⭕ O'} ning navbati`;
@@ -680,7 +608,7 @@
         if (gameMode === 'bot') {
             currentPlayer = 'X';
             botPlayer = 'O';
-            statusMessage.innerHTML = '🤖 Bot bilan: Siz X bilan boshlaysiz';
+            statusMessage.innerHTML = '🤖 Yutib bo\'lmaydigan bot: Siz X bilan boshlaysiz';
         } else {
             currentPlayer = 'X';
             statusMessage.innerHTML = '👥 2 o‘yinchi: X boshlaydi';
